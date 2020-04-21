@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  web_front:
+    container_name: web_frontend_vue
+    build: ./web_front/
+    volumes:
+      - ./web_front:/usr/src/app
+    command: npm run serve
+    ports:
+      - 8080:8080
+    tty: true # Allocate a pseudo-tty
+    stdin_open: true # Keep STDIN open even if not attached
+    depends_on:
+      - web_back
+
+  web_back:
+    container_name: web_back_django
+    build: ./web_back/
+    volumes:
+      - ./web_back:/usr/src/app
+    #    command: sh -c './wait-for db:3306 -- python manage.py runserver 0.0.0.0:8000'
+    ports:
+      - 8000:8000
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+
+  db:
+    container_name: db_mysql
+    image: mysql:8
+    env_file: mysql/.env.local
+    restart: always
+    ports:
+      - 3306:3306
+#    volumes:
+#      - db_volume:/var/lib/mysql/data
+
+#volumes:
+#    db_volume:

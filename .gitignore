@@ -1,0 +1,11 @@
+__pycache__
+.DS_Store
+.idea
+mysql/
+.env*
+.git
+.dockerignore
+
+web_front/node_modules
+
+web_back/media
