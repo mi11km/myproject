@@ -41,7 +41,7 @@
           >ユーザーを削除する</v-btn
         >
       </v-card-actions>
-      {{ password }}
+
       <v-dialog v-model="dialog" max-width="360px">
         <v-card>
           <v-card-title class="headline">ユーザーを削除しますか？</v-card-title>
@@ -59,7 +59,7 @@
                 outlined
                 validate-on-blur
                 :rules="baseValidRules"
-                v-model.lazy.trim="password"
+                v-model.lazy.trim="currentPassword"
               ></v-text-field>
             </v-form>
           </v-card-text>
@@ -86,7 +86,7 @@ export default {
     formData: {
       name: "",
     },
-    password: "",
+    currentPassword: "",
     baseValidRules: [(v) => !!v || "入力必須です"],
     editable: true,
     show: false,
@@ -122,17 +122,18 @@ export default {
           });
       }
     },
+    // todo エンドポイントができてない
     deleteUser() {
       const isValid = this.$refs.form.validate();
       if (isValid) {
-        this.$store.dispatch("auth/delete", this.password).then(() => {
+        this.$store.dispatch("auth/delete", this.currentPassword).then(() => {
           this.$router.replace("/");
         });
       }
     },
     resetDialog() {
       this.dialog = false;
-      this.password = "";
+      this.currentPassword = "";
     },
   },
 };

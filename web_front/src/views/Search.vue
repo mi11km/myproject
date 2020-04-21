@@ -3,13 +3,6 @@
     <v-card tile>
       <v-card max-width="840px" class="mx-auto pt-6 elevation-0">
         <v-form>
-          <!--          <v-autocomplete-->
-          <!--            prepend-inner-icon="mdi-magnify"-->
-          <!--            label="サークルを検索(キーワードを入力)"-->
-          <!--            outlined-->
-          <!--            solo-->
-          <!--            v-model="searchWords"-->
-          <!--          ></v-autocomplete>-->
           <v-text-field
             label="サークルを検索（キーワードを入力）"
             prepend-inner-icon="mdi-magnify"
