@@ -48,20 +48,7 @@
 
           <v-card-text class="pb-0">
             <span style="color: red;">必ず読んでください！</span><br />
-            この操作はもとに戻せません。ユーザーに紐づくサークル情報も削除されます。<br />
-            確認のため、あなたのパスワードを入力してください。
-            <v-form ref="form">
-              <v-text-field
-                class="mt-4"
-                type="password"
-                prepend-inner-icon="mdi-lock"
-                counter
-                outlined
-                validate-on-blur
-                :rules="baseValidRules"
-                v-model.lazy.trim="currentPassword"
-              ></v-text-field>
-            </v-form>
+            この操作はもとに戻せません。ユーザーに紐づくサークル情報も削除されます。
           </v-card-text>
 
           <v-card-actions>
@@ -86,7 +73,6 @@ export default {
     formData: {
       name: "",
     },
-    currentPassword: "",
     baseValidRules: [(v) => !!v || "入力必須です"],
     editable: true,
     show: false,
@@ -122,18 +108,16 @@ export default {
           });
       }
     },
-    // todo エンドポイントができてない
     deleteUser() {
       const isValid = this.$refs.form.validate();
       if (isValid) {
-        this.$store.dispatch("auth/delete", this.currentPassword).then(() => {
+        this.$store.dispatch("auth/delete").then(() => {
           this.$router.replace("/");
         });
       }
     },
     resetDialog() {
       this.dialog = false;
-      this.currentPassword = "";
     },
   },
 };
