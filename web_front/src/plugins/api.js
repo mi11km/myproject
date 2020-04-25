@@ -13,7 +13,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // 認証用トークンがあればリクエストヘッダに乗せる
-    const token = localStorage.getItem("access");
+    const token = sessionStorage.getItem("access");
     if (token) {
       config.headers.Authorization = "JWT " + token;
       return config;
