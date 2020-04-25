@@ -49,7 +49,7 @@ export default {
   data: () => ({
     constantItems: [
       { icon: "mdi-home", text: "ホーム", link: "/" },
-      { icon: "mdi-view-module", text: "サークル一覧", link: "/search/list" },
+      { icon: "mdi-view-module", text: "サークル一覧", link: "/search" },
     ],
   }),
   computed: {

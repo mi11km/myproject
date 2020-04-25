@@ -39,7 +39,7 @@
           <v-btn to="/profile" v-if="isLoggedIn" class="ma-2" elevation="4"
             >マイページへ
           </v-btn>
-          <v-btn to="/search/list" class="ma-2" elevation="4">サークルを探す</v-btn>
+          <v-btn to="/search" class="ma-2" elevation="4">サークルを探す</v-btn>
         </v-card-actions>
       </div>
     </v-card>

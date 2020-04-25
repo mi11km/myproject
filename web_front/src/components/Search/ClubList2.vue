@@ -1,5 +1,5 @@
 <template>
-  <div id="clubList">
+  <div id="clubList2">
     <v-card
       class="ma-8"
       max-width="320"
@@ -28,7 +28,7 @@
 import api from "../../plugins/api";
 
 export default {
-  name: "ClubList",
+  name: "ClubList2",
   data: () => ({
     posts: []
   }),
@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style scoped>
-#clubList {
+#clubList2 {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

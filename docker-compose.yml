@@ -19,7 +19,8 @@ services:
     build: ./web_back/
     volumes:
       - ./web_back:/usr/src/app
-    #    command: sh -c './wait-for db:3306 -- python manage.py runserver 0.0.0.0:8000'
+    env_file: web_back/.env.local
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     tty: true
@@ -32,10 +33,13 @@ services:
     image: mysql:8
     env_file: mysql/.env.local
     restart: always
+    tty: true
     ports:
       - 3306:3306
-#    volumes:
-#      - db_volume:/var/lib/mysql/data
+    volumes:
+      - db_volume_local:/var/lib/mysql
 
-#volumes:
-#    db_volume:
+volumes:
+  db_volume_local:
+
+# 初回の docker-compose up だけはdb接続前にpython manage.py runserver してエラーがでます。

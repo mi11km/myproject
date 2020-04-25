@@ -9,3 +9,5 @@ mysql/
 web_front/node_modules
 
 web_back/media
+
+venv

@@ -8,7 +8,6 @@ import Login from "../views/Login";
 import Logout from "../components/Logout";
 import Profile from "../views/Profile";
 import Search from "../views/Search";
-import ClubList from "../components/Search/ClubList";
 import ClubDetail from "../components/Search/ClubDetail";
 
 Vue.use(VueRouter);
@@ -21,13 +20,9 @@ const router = new VueRouter({
     { path: "/login", component: Login, meta: { alreadyLoggedIn: true } },
     { path: "/logout", component: Logout },
     { path: "/profile", component: Profile, meta: { requiresAuth: true } },
-    {
-      path: "/search",
-      component: Search,
-      children: [{ path: "list", component: ClubList }],
-    },
-    { path: "/detail/:id", component: ClubDetail, props: true },
-  ],
+    { path: "/search", component: Search },
+    { path: "/detail/:id", component: ClubDetail, props: true }
+  ]
 });
 
 /**
@@ -41,7 +36,7 @@ router.beforeEach((to, from, next) => {
   console.log("isLoggedIn=", isLoggedIn);
 
   // ログインが必要な画面に遷移しようとした場合
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     if (isLoggedIn) {
       next();
     } else {
@@ -65,7 +60,7 @@ router.beforeEach((to, from, next) => {
         forceToLoginPage(to, from, next);
       }
     }
-  } else if (to.matched.some((record) => record.meta.alreadyLoggedIn)) {
+  } else if (to.matched.some(record => record.meta.alreadyLoggedIn)) {
     // ログインしている状態でログインor登録画面に行こうとした場合
     if (isLoggedIn) {
       next("/");
@@ -86,7 +81,7 @@ function forceToLoginPage(to, from, next) {
   next({
     path: "/login",
     // 遷移先のURLはクエリ文字列として付加
-    query: { next: to.fullPath },
+    query: { next: to.fullPath }
   });
 }
 

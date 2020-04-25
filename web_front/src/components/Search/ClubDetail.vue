@@ -28,7 +28,7 @@
         </v-card-title>
         <v-card-subtitle class="px-12"
           >{{ data.university }} --
-          {{ data.is_officially_approved }}
+          {{ data.is_officially_approved }} ({{data.kind}})
         </v-card-subtitle>
 
         <v-card class="mx-auto detail elevation-0 pa-4 inner-transparent">
@@ -54,7 +54,7 @@ export default {
   data: () => ({
     data: {},
     items: [
-      { text: "サークル一覧", disabled: false, to: "/search/list" },
+      { text: "サークル一覧", disabled: false, to: "/search" },
       { text: "サークル詳細", disabled: false },
     ],
     template: "まだ記入されてないよ！更新されるのを待ってね！",
