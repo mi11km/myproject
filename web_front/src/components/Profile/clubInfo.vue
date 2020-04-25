@@ -51,6 +51,16 @@
         :disabled="editable"
         v-model.lazy="formData.message"
       ></v-textarea>
+      <v-file-input
+        v-model="formData.image"
+        :disabled="editable"
+        small-chips
+        persistent-hint
+        hint="プロフィール画像を変更する場合はこちらで画像を選択してください"
+        accept="image/*"
+        label="プロフィール画像"
+        prepend-icon="mdi-camera"
+      ></v-file-input>
     </v-form>
 
     <v-card-actions>
@@ -75,22 +85,23 @@ export default {
   data: () => ({
     editable: true,
     show: false,
-    baseValidRules: [(v) => !!v || "入力必須です"],
+    baseValidRules: [v => !!v || "入力必須です"],
     formData: {
       name: "",
       university: "",
       kind: "",
       is_officially_approved: "",
+      image: null,
       activity: "",
-      message: "",
-    },
+      message: ""
+    }
   }),
   created() {
     this.$store.commit("message/clear");
     this.setData();
   },
   computed: {
-    ...mapGetters("club", ["clubData", "choiceSelector"]),
+    ...mapGetters("club", ["clubData", "choiceSelector"])
   },
   methods: {
     set() {
@@ -113,12 +124,26 @@ export default {
     updateClubData() {
       const isValidated = this.$refs.form.validate();
       if (isValidated) {
-        this.$store.dispatch("club/update", this.formData).then(() => {
+        const params = new FormData();
+        params.append("name", this.formData.name);
+        params.append("university", this.formData.university);
+        params.append("kind", this.formData.kind);
+        params.append(
+          "is_officially_approved",
+          this.formData.is_officially_approved
+        );
+        params.append("activity", this.formData.activity);
+        params.append("message", this.formData.message);
+        if (this.formData.image) {
+          params.append("image", this.formData.image);
+        }
+
+        this.$store.dispatch("club/update", params).then(() => {
           this.set();
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

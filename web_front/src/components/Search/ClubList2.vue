@@ -11,7 +11,7 @@
       <v-img
         class="white--text align-end"
         height="200px"
-        src="../../assets/top/top4.jpg"
+        :src="post.image"
       >
         <v-card-title>{{ post.name }}</v-card-title>
       </v-img>

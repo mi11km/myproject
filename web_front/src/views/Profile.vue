@@ -2,9 +2,9 @@
   <div>
     <v-card>
       <v-card min-height="208px" class="con elevation-0" tile>
-        <v-avatar size="144" class="my-2">
+        <v-avatar size="189" class="my-2">
           <v-img
-            src="../assets/top/top4.jpg"
+            :src="clubData.image"
             alt="サークルのトップ画像"
             class="top-img"
           ></v-img>
@@ -43,17 +43,17 @@ import Settings from "../components/Profile/Settings";
 export default {
   name: "ClubProfile",
   data: () => ({
-    currentComponent: "Detail",
+    currentComponent: "Detail"
   }),
   computed: {
     clubData() {
       return this.$store.getters["club/clubData"];
-    },
+    }
   },
   components: {
     Detail,
-    Settings,
-  },
+    Settings
+  }
 };
 </script>
 

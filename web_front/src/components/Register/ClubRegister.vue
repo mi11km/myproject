@@ -37,6 +37,15 @@
               label="大学公認かどうか"
               prepend-icon="mdi-checkbox-multiple-marked-outline"
             ></v-select>
+
+            <v-file-input
+              v-model="form.image"
+              :rules="baseValidRules"
+              small-chips
+              accept="image/*"
+              label="プロフィール画像を選択してください"
+              prepend-icon="mdi-camera"
+            ></v-file-input>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -61,18 +70,19 @@
 export default {
   name: "ClubRegister",
   data: () => ({
-    baseValidRules: [(v) => !!v || "入力必須です"],
+    baseValidRules: [v => !!v || "必須です"],
     form: {
       clubName: "",
       mainUniversity: "",
       clubKind: "",
       approval: "",
-    },
+      image: null
+    }
   }),
   computed: {
     choiceSelector() {
       return this.$store.getters["club/choiceSelector"];
-    },
+    }
   },
   methods: {
     clubRegister() {
@@ -84,13 +94,14 @@ export default {
             university: this.form.mainUniversity,
             kind: this.form.clubKind,
             is_officially_approved: this.form.approval,
+            image: this.form.image
           })
           .then(() => {
             this.$router.replace("/profile");
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
