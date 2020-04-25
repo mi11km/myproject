@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
   store.commit("message/clear");
 
   const isLoggedIn = store.getters["auth/isLoggedIn"];
-  const token = localStorage.getItem("access");
+  const token = sessionStorage.getItem("access");
   console.log("isLoggedIn=", isLoggedIn);
 
   // ログインが必要な画面に遷移しようとした場合

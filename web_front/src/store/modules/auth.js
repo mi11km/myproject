@@ -59,7 +59,7 @@ const auth = {
           })
           .then(response => {
             // 認証用トークンをlocalStorageに保存
-            localStorage.setItem("access", response.data.access);
+            sessionStorage.setItem("access", response.data.access);
             // ユーザー情報を取得してstoreのユーザー情報を更新
             dispatch("reload").then(user => user);
             console.log("logged in: success");
@@ -77,7 +77,7 @@ const auth = {
      */
     logout({ commit }) {
       // 認証用トークンをlocalStorageから削除
-      localStorage.removeItem("access");
+      sessionStorage.removeItem("access");
       // storeのユーザー情報をクリア
       commit("clear");
     },
