@@ -7,7 +7,7 @@
             label="サークルを検索（キーワードを入力）"
             prepend-inner-icon="mdi-magnify"
             type="text"
-            v-model="searchWords"
+            v-model="filterParams.words"
             outlined
           />
         </v-form>
@@ -21,7 +21,7 @@
             class="selector mx-2"
             label="サークルの系統"
             prepend-inner-icon="mdi-checkbox-multiple-marked-outline"
-            v-model="filterConditions.kind"
+            v-model="filterParams.kind"
             :items="choiceSelector.kinds"
           ></v-select>
           <v-select
@@ -31,7 +31,7 @@
             class="selector mx-2"
             label="大学公認かどうか"
             prepend-inner-icon="mdi-checkbox-multiple-marked-outline"
-            v-model="filterConditions.approval"
+            v-model="filterParams.approval"
             :items="choiceSelector.approval"
           ></v-select>
         </v-form>
@@ -49,7 +49,7 @@
 
     <transition name="slide" mode="out-in" appear>
       <v-lazy>
-        <router-view :query="query"></router-view>
+        <component :is="currentList" :query="query"></component>
       </v-lazy>
     </transition>
     <v-btn @click="$vuetify.goTo(0)" class="go-to-top ma-6 d-none d-sm-flex">
@@ -59,57 +59,60 @@
 </template>
 
 <script>
+import ClubList from "../components/Search/ClubList";
+import ClubList2 from "../components/Search/ClubList2";
+
 export default {
   name: "Search",
   data: () => ({
-    query: "",
-    searchWords: "",
-    filterConditions: {
+    currentList: "ClubList",
+    nextList: "ClubList2",
+    query: null,
+    queryParams: null,
+    filterParams: {
       words: null,
       kind: null,
-      approval: null,
-    },
+      approval: null
+    }
   }),
+  components: {
+    ClubList,
+    ClubList2
+  },
   computed: {
     choiceSelector() {
       return this.$store.getters["club/choiceSelector"];
-    },
+    }
   },
   methods: {
-    setQuery() {
-      if (this.searchWords) {
-        let searchWordsArray = this.searchWords.split(/\s+/);
-        for (let i = 0; i < searchWordsArray.length; i++) {
-          searchWordsArray[i] = "search=" + searchWordsArray[i];
+    setQueryParams() {
+      if (this.filterParams.words) {
+        this.queryParams = [];
+        let searchWordsArray = this.filterParams.words.split(/\s+/);
+        for (let word of searchWordsArray) {
+          this.queryParams.push(["activity", word]); // キーワード検索は活動内容のワードの部分一致から絞る
         }
-        this.filterConditions.words = searchWordsArray;
       }
-      this.addCondition(this.filterConditions.kind, "kind");
-      this.addCondition(
-        this.filterConditions.approval,
-        "is_officially_approved"
-      );
-      return this.filterConditions.words;
+      this.addQueryParam(this.filterParams.kind, "kind");
+      this.addQueryParam(this.filterParams.approval, "is_officially_approved");
+    },
+    addQueryParam(value, modelName) {
+      if (value) {
+        if (this.queryParams == null) {
+          this.queryParams = [];
+        }
+        this.queryParams.push([modelName, value]);
+      }
     },
     search() {
-      this.query = this.setQuery();
-      if (this.query) {
-        this.query = this.query.join("&");
-        let url = "/search/list/?" + this.query;
-        this.$router.push({ path: url });
+      this.setQueryParams();
+      if (this.queryParams) {
+        this.query = new URLSearchParams(this.queryParams);
+        [this.currentList, this.nextList] = [this.nextList, this.currentList];
+        this.queryParams = null;
       }
-      this.filterConditions.words = null;
-    },
-    addCondition(value, modelName) {
-      if (value) {
-        value = modelName + "=" + value;
-        if (this.filterConditions.words == null) {
-          this.filterConditions.words = [];
-        }
-        this.filterConditions.words.push(value);
-      }
-    },
-  },
+    }
+  }
 };
 </script>
 
